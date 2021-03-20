@@ -1,0 +1,28 @@
+version: "3.9"
+   
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      # ホストのdefault.confを同期
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      # ホストの./appフォルダを同期
+      - ./app:/var/www/html/app
+    depends_on:
+      - php
+
+  php:
+    build: ./docker/
+    volumes:
+      # ホストの./appフォルダを同期
+      - ./app:/var/www/html/app
+    
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+ 
